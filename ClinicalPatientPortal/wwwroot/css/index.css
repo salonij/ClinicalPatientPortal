@@ -1,0 +1,5 @@
+﻿.card h1 {
+    font-size: 24px;
+    color: var(--color-text);
+    margin: 0 0 4px;
+}

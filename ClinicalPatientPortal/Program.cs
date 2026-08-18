@@ -4,6 +4,13 @@ using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeFolder("/");         // require login for every page by default
+    options.Conventions.AllowAnonymousToPage("/Login"); // except the Login page itself
+});
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -21,9 +28,6 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Login";
 });
 
-// Add services to the container.
-builder.Services.AddRazorPages();
-
 var app = builder.Build();
 
 // Runs at startup, Checks if any migration haven't been applied yet and applies them.
@@ -31,6 +35,22 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     db.Database.Migrate();
+
+    //code to create demo user automatically when the app runs.
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+    const string demoEmail = "doctor@clinicalportal.com";
+    const string demoPassword = "Clinician123";
+
+    if (await userManager.FindByEmailAsync(demoEmail) == null)
+    {
+        var demoUser = new IdentityUser
+        {
+            UserName = demoEmail,
+            Email = demoEmail,
+            EmailConfirmed = true
+        };
+        await userManager.CreateAsync(demoUser, demoPassword);
+    }
 }
 
 // Configure the HTTP request pipeline.

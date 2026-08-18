@@ -1,0 +1,39 @@
+﻿@page
+@model ClinicalPatientPortal.Pages.LoginModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Login - Clinical Patient Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/login.css" />
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-card">
+            <h1>Clinical Patient Portal</h1>
+            <p class="subtitle">Sign in to access patient records</p>
+
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="alert-error">@Model.ErrorMessage</div>
+            }
+            <form method="post">
+                <div class="form-group">
+                    <label for="Email">Email</label>
+                    <input type="email" id="Email" name="Email" value="@Model.Email" required autofocus />
+                </div>
+                <div class="form-group">
+                    <label for="Password">Password</label>
+                    <input type="password" id="Password" name="Password" required />
+                </div>
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
