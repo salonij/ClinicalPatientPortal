@@ -1,9 +1,11 @@
 ﻿using ClinicalPatientPortal.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ClinicalPatientPortal.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -18,6 +20,8 @@ namespace ClinicalPatientPortal.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Patient>().HasData(
                 new Patient { PatientId = 1, MRN = "MRN1001", FirstName = "Jane", LastName = "Doe", DOB = new DateTime(1985, 4, 12), Gender = "Female", PhoneNumber = "555-123-4567", AddressLine1 = "123 Maple St", City = "Springfield", State = "IL", ZipCode = "62701" },
                 new Patient { PatientId = 2, MRN = "MRN1002", FirstName = "John", LastName = "Smith", DOB = new DateTime(1978, 9, 23), Gender = "Male", PhoneNumber = "555-987-6543", AddressLine1 = "456 Oak Ave", City = "Springfield", State = "IL", ZipCode = "62702" },
