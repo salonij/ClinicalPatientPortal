@@ -9,10 +9,12 @@ namespace ClinicalPatientPortal.Pages
     public class LoginModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager)
+        public LoginModel(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         [BindProperty]
@@ -35,7 +37,14 @@ namespace ClinicalPatientPortal.Pages
                 return Page();
             }
 
-            var result = await _signInManager.PasswordSignInAsync(Email, Password, isPersistent: false, lockoutOnFailure: true);
+            var user = await _userManager.FindByEmailAsync(Email);
+            if (user == null)
+            {
+                ErrorMessage = "Invalid email or password.";
+                return Page();
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(user, Password, isPersistent: false, lockoutOnFailure: true);
 
             if (result.Succeeded)
             {

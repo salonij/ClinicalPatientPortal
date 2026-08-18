@@ -17,6 +17,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
     options.Password.RequireNonAlphanumeric = false; // keeping it simple for a demo account; still needs upper/lower/digit
+    options.User.AllowedUserNameCharacters =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+ ";
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
@@ -38,6 +40,7 @@ using (var scope = app.Services.CreateScope())
 
     //code to create demo user automatically when the app runs.
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+    const string demoUserName = "Dr. Sarah Mitchell";
     const string demoEmail = "doctor@clinicalportal.com";
     const string demoPassword = "Clinician123";
 
@@ -45,7 +48,7 @@ using (var scope = app.Services.CreateScope())
     {
         var demoUser = new IdentityUser
         {
-            UserName = demoEmail,
+            UserName = demoUserName,
             Email = demoEmail,
             EmailConfirmed = true
         };

@@ -111,6 +111,55 @@ body {
     padding: 24px;
 }
 
+.user-menu-trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--color-text);
+    padding: 6px 4px;
+}
+
+.user-menu-trigger:hover {
+    color: var(--color-primary);
+}
+
+.user-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--color-text-muted);
+}
+
+.user-menu-dropdown {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 6px;
+    min-width: 180px;
+}
+
+.user-menu-signout {
+    width: 100%;
+    background: none;
+    border: none;
+    color: var(--color-text);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.user-menu-signout:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
 /* ---------- Responsive: app shell nav ---------- */
 @media (max-width: 768px) {
     .app-header .nav-container {
