@@ -1,5 +1,4 @@
-﻿using ClinicalPatientPortal.Data;
-using ClinicalPatientPortal.Models.Dtos;
+﻿using ClinicalPatientPortal.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicalPatientPortal.Controllers
@@ -8,41 +7,29 @@ namespace ClinicalPatientPortal.Controllers
     [Route("api/patients/{patientId}/documents")]
     public class DocumentsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IPatientDataService _patientDataService;
         private readonly string _documentsRootPath;
 
-        public DocumentsController(ApplicationDbContext context, IWebHostEnvironment env)
+        public DocumentsController(IPatientDataService patientDataService, IWebHostEnvironment env)
         {
-            _context = context;
+            _patientDataService = patientDataService;
             _documentsRootPath = Path.Combine(env.ContentRootPath, "PatientDocuments");
         }
 
 
         [HttpGet]
-        public IActionResult GetDocuments(int patientId)
+        public async Task<IActionResult> GetDocumentsAsync(int patientId)
         {
-            if (!_context.Patients.Any(p => p.PatientId == patientId))
+            if (!await _patientDataService.PatientExistsAsync(patientId))
                 return NotFound($"Patient {patientId} not found.");
 
-            var documents = _context.Documents
-                .Where(d => d.PatientId == patientId)
-                .Select(d => new DocumentDto
-                {
-                    DocumentId = d.DocumentId,
-                    DocumentName = d.DocumentName,
-                    DocumentType = d.DocumentType,
-                    DocumentDate = d.DocumentDate,
-                    UploadedDate = d.UploadedDate
-                })
-                .ToList();
-
-            return Ok(documents);
+            return Ok(await _patientDataService.GetDocumentsAsync(patientId));
         }
 
         [HttpGet("{documentId}/download")]
-        public IActionResult DownloadDocument(int patientId, int documentId)
+        public async Task<IActionResult> DownloadDocumentAsync(int patientId, int documentId)
         {
-            var doc = _context.Documents.FirstOrDefault(d => d.DocumentId == documentId && d.PatientId == patientId);
+            var doc = await _patientDataService.GetDocumentEntityAsync(patientId, documentId);
             if (doc == null) return NotFound();
 
             var relativePath = doc.FilePath.TrimStart('/', '\\');

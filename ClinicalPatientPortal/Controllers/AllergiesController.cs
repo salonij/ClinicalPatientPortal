@@ -1,5 +1,4 @@
-﻿using ClinicalPatientPortal.Data;
-using ClinicalPatientPortal.Models.Dtos;
+﻿using ClinicalPatientPortal.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicalPatientPortal.Controllers
@@ -8,32 +7,20 @@ namespace ClinicalPatientPortal.Controllers
     [Route("api/patients/{patientId}/allergies")]
     public class AllergiesController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IPatientDataService _patientDataService;
 
-        public AllergiesController(ApplicationDbContext context)
+        public AllergiesController(IPatientDataService patientDataService)
         {
-            _context = context;
+            _patientDataService = patientDataService;
         }
 
         [HttpGet]
-        public IActionResult GetAllergies(int patientId)
+        public async Task<IActionResult> GetAllergies(int patientId)
         {
-            if (!_context.Patients.Any(p => p.PatientId == patientId))
+            if (!await _patientDataService.PatientExistsAsync(patientId))
                 return NotFound($"Patient {patientId} not found.");
 
-            var allergies = _context.Allergies
-                .Where(a => a.PatientId == patientId)
-                .Select(a => new AllergyDto
-                {
-                    AllergyId = a.AllergyId,
-                    AllergyName = a.AllergyName,
-                    Severity = a.Severity,
-                    Status = a.Status,
-                    RecordedDate = a.RecordedDate
-                })
-                .ToList();
-
-            return Ok(allergies);
+            return Ok(await _patientDataService.GetAllergiesAsync(patientId));
         }
     }
 }

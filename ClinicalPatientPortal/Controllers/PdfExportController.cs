@@ -1,10 +1,9 @@
-﻿using ClinicalPatientPortal.Data;
-using ClinicalPatientPortal.Models.Dtos;
+﻿using ClinicalPatientPortal.Models.Dtos;
+using ClinicalPatientPortal.Services;
 using Microsoft.AspNetCore.Mvc;
-using QuestPDF.Helpers;
 using QuestPDF.Fluent;
+using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using ClinicalPatientPortal.Models;
 
 namespace ClinicalPatientPortal.Controllers
 {
@@ -12,16 +11,16 @@ namespace ClinicalPatientPortal.Controllers
     [Route("api/patients/{patientId}/pdf")]
     public class PdfExportController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IPatientDataService _patientDataService;
 
-        public PdfExportController(ApplicationDbContext context)
+        public PdfExportController(IPatientDataService patientDataService)
         {
-            _context = context;
+            _patientDataService = patientDataService;
         }
         [HttpGet("demographics")]
-        public IActionResult ExportDemographics(int patientId)
+        public async Task<IActionResult> ExportDemographicsAsync(int patientId)
         {
-            var patient = GetPatient(patientId);
+            var patient = await _patientDataService.GetPatientDetailAsync(patientId);
             if (patient == null) return NotFound();
 
             var pdfBytes = QuestPDF.Fluent.Document.Create(container =>
@@ -53,13 +52,13 @@ namespace ClinicalPatientPortal.Controllers
         }
 
         [HttpGet("allergies")]
-        public IActionResult ExportAllergiesAndAlerts(int patientId)
+        public async Task<IActionResult> ExportAllergiesAndAlertsAsync(int patientId)
         {
-            var patient = GetPatient(patientId);
+            var patient = await _patientDataService.GetPatientDetailAsync(patientId);
             if (patient == null) return NotFound();
 
-            var allergies = _context.Allergies.Where(a => a.PatientId == patientId).ToList();
-            var alerts = _context.Alerts.Where(a => a.PatientId == patientId).ToList();
+            var allergies = await _patientDataService.GetAllergiesAsync(patientId);
+            var alerts = await _patientDataService.GetAlertsAsync(patientId);
 
             var pdfBytes = QuestPDF.Fluent.Document.Create(container =>
             {
@@ -96,12 +95,12 @@ namespace ClinicalPatientPortal.Controllers
         }
 
         [HttpGet("medications")]
-        public IActionResult ExportMedications(int patientId)
+        public async Task<IActionResult> ExportMedicationsAsync(int patientId)
         {
-            var patient = GetPatient(patientId);
+            var patient = await _patientDataService.GetPatientDetailAsync(patientId);
             if (patient == null) return NotFound();
 
-            var medications = _context.Medications.Where(m => m.PatientId == patientId).ToList();
+            var medications = await _patientDataService.GetMedicationsAsync(patientId);
 
             var pdfBytes = QuestPDF.Fluent.Document.Create(container =>
             {
@@ -127,27 +126,6 @@ namespace ClinicalPatientPortal.Controllers
             }).GeneratePdf();
 
             return File(pdfBytes, "application/pdf", $"{patient.LastName}_{patient.FirstName}_Medications.pdf");
-        }
-
-        private PatientDetailDto? GetPatient(int patientId)
-        {
-            return _context.Patients
-                .Where(p => p.PatientId == patientId)
-                .Select(p => new PatientDetailDto
-                {
-                    PatientId = p.PatientId,
-                    MRN = p.MRN,
-                    FirstName = p.FirstName,
-                    LastName = p.LastName,
-                    DOB = p.DOB,
-                    Gender = p.Gender,
-                    PhoneNumber = p.PhoneNumber,
-                    AddressLine1 = p.AddressLine1,
-                    City = p.City,
-                    State = p.State,
-                    ZipCode = p.ZipCode
-                })
-                .FirstOrDefault();
         }
 
         private static void ComposeHeader(IContainer container, PatientDetailDto patient, string sectionTitle)
@@ -199,7 +177,7 @@ namespace ClinicalPatientPortal.Controllers
             });
         }
 
-        private static void AllergiesTable(IContainer container, List<Allergy> allergies)
+        private static void AllergiesTable(IContainer container, List<AllergyDto> allergies)
         {
             container.Table(table => {
                 table.ColumnsDefinition(columns =>
@@ -228,7 +206,7 @@ namespace ClinicalPatientPortal.Controllers
             });
         }
 
-        private static void AlertsTable(IContainer container, List<Alert> alerts)
+        private static void AlertsTable(IContainer container, List<AlertDto> alerts)
         {
             container.Table(table => {
                 table.ColumnsDefinition(columns =>
@@ -257,7 +235,7 @@ namespace ClinicalPatientPortal.Controllers
             });
         }
 
-        private static void MedicationsTable(IContainer container, List<Medication> medications)
+        private static void MedicationsTable(IContainer container, List<MedicationDto> medications)
         {
             container.Table(table => {
                 table.ColumnsDefinition(columns =>

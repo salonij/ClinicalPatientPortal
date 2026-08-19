@@ -1,5 +1,6 @@
 ﻿using ClinicalPatientPortal.Data;
 using ClinicalPatientPortal.Models.Dtos;
+using ClinicalPatientPortal.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +13,11 @@ namespace ClinicalPatientPortal.Controllers
     public class PatientsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        public PatientsController(ApplicationDbContext context)
+        private readonly IPatientDataService _patientDataService;
+        public PatientsController(ApplicationDbContext context, IPatientDataService patientDataService)
         {
             _context = context;
+            _patientDataService = patientDataService;
         }
 
         [HttpGet("search")]
@@ -71,30 +74,10 @@ namespace ClinicalPatientPortal.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetDemographics(int id)
+        public async Task<IActionResult> GetDemographicsAsync(int id)
         {
-            if (!_context.Patients.Any(p => p.PatientId == id))
-                return NotFound($"Patient {id} not found.");
-
-            var patient = _context.Patients
-                .Where(p => p.PatientId == id)
-                .Select(p => new PatientDetailDto
-                {
-                    PatientId = p.PatientId,
-                    MRN = p.MRN,
-                    FirstName = p.FirstName,
-                    LastName = p.LastName,
-                    DOB = p.DOB,
-                    Gender = p.Gender,
-                    PhoneNumber = p.PhoneNumber,
-                    AddressLine1 = p.AddressLine1,
-                    City = p.City,
-                    State = p.State,
-                    ZipCode = p.ZipCode
-                })
-                .FirstOrDefault();
-
-            return Ok(patient);
+            var patient = await _patientDataService.GetPatientDetailAsync(id);
+            return patient == null ? NotFound() : Ok(patient);
         }
     }
 }

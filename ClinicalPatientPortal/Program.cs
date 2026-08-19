@@ -1,6 +1,7 @@
 using ClinicalPatientPortal.Data;
-using Microsoft.EntityFrameworkCore;
+using ClinicalPatientPortal.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,9 @@ builder.Services.AddRazorPages(options =>
 });
 
 builder.Services.AddControllers();
+
+//registering service to DI container
+builder.Services.AddScoped<IPatientDataService, PatientDataService>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

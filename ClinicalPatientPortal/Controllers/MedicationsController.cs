@@ -1,5 +1,4 @@
-﻿using ClinicalPatientPortal.Data;
-using ClinicalPatientPortal.Models.Dtos;
+﻿using ClinicalPatientPortal.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicalPatientPortal.Controllers
@@ -8,37 +7,20 @@ namespace ClinicalPatientPortal.Controllers
     [Route("api/patients/{patientId}/medications")]
     public class MedicationsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IPatientDataService _patientDataService;
 
-        public MedicationsController(ApplicationDbContext context)
+        public MedicationsController(IPatientDataService patientDataService)
         {
-            _context = context;
+            _patientDataService = patientDataService;
         }
 
         [HttpGet]
-        public IActionResult GetMedications(int patientId)
+        public async Task<IActionResult> GetMedicationsAsync(int patientId)
         {
-            if (!_context.Patients.Any(p => p.PatientId == patientId))
+            if (!await _patientDataService.PatientExistsAsync(patientId))
                 return NotFound($"Patient {patientId} not found.");
 
-            var medications = _context.Medications
-                .Where(m => m.PatientId == patientId)
-                .Select(m => new MedicationDto
-                {
-                    MedicationId = m.MedicationId,
-                    MedicationName = m.MedicationName,
-                    Strength = m.Strength,
-                    DosageInstructions = m.DosageInstructions,
-                    Frequency = m.Frequency,
-                    Route = m.Route,
-                    StartDate = m.StartDate,
-                    EndDate = m.EndDate,
-                    PrescribingProvider = m.PrescribingProvider,
-                    Status = m.Status
-                })
-                .ToList();
-
-            return Ok(medications);
+            return Ok(await _patientDataService.GetMedicationsAsync(patientId));
         }
     }
 }

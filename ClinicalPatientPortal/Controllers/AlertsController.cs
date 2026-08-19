@@ -1,5 +1,4 @@
-﻿using ClinicalPatientPortal.Data;
-using ClinicalPatientPortal.Models.Dtos;
+﻿using ClinicalPatientPortal.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicalPatientPortal.Controllers
@@ -8,32 +7,20 @@ namespace ClinicalPatientPortal.Controllers
     [Route("api/patients/{patientId}/alerts")]
     public class AlertsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IPatientDataService _patientDataService;
 
-        public AlertsController(ApplicationDbContext context)
+        public AlertsController(IPatientDataService patientDataService)
         {
-            _context = context;
+            _patientDataService = patientDataService;
         }
 
         [HttpGet]
-        public IActionResult GetAlerts(int patientId)
+        public async Task<IActionResult> GetAlertsAsync(int patientId)
         {
-            if (!_context.Patients.Any(p => p.PatientId == patientId))
+            if (!await _patientDataService.PatientExistsAsync(patientId))
                 return NotFound($"Patient {patientId} not found.");
 
-            var alerts = _context.Alerts
-                .Where(a => a.PatientId == patientId)
-                .Select(a => new AlertDto
-                {
-                    AlertId = a.AlertId,
-                    AlertType = a.AlertType,
-                    Description = a.Description,
-                    Severity = a.Severity,
-                    CreatedDate = a.CreatedDate
-                })
-                .ToList();
-
-            return Ok(alerts);
+            return Ok(await _patientDataService.GetAlertsAsync(patientId));
         }
     }
 }
