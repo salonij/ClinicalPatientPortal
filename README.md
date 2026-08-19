@@ -20,7 +20,7 @@ No manual database setup is required. On first run, the application automaticall
 
 Demo Account
 
-A demo clinician account is seeded automatically on first run — no manual signup is required.
+A demo clinician account is seeded automatically on first run. No manual signup is required.
 
 Email:	doctor@clinicalportal.com
 Password:	Clinician123
