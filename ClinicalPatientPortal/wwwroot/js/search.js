@@ -108,7 +108,7 @@
                 <td>${escapeHtml(p.gender || '')}</td>
             `;
             row.addEventListener('click', function () {
-                alert('Patient Details page coming next: ' + p.firstName + ' ' + p.lastName);
+                window.location.href = `/PatientDetails/${p.patientId}`;
             });
             resultsBody.appendChild(row);
         });

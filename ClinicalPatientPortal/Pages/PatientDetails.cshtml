@@ -1,0 +1,31 @@
+﻿@page "{id:int}"
+@model ClinicalPatientPortal.Pages.PatientDetailsModel
+@{
+    ViewData["Title"] = "Patient Details";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/patientDetails.css" />
+}
+
+<div class="patient-header" id="patientHeader">
+    <h2 id="patientName">Loading...</h2>
+    <span id="patientMeta"></span>
+</div>
+
+<div class="tabs">
+    <button class="tab-btn active" data-tab="demographics">Demographics</button>
+    <button class="tab-btn" data-tab="allergies">Allergies &amp; Alerts</button>
+    <button class="tab-btn" data-tab="medications">Medications</button>
+    <button class="tab-btn" data-tab="documents">Documents</button>
+</div>
+
+<div id="demographics" class="tab-content active"></div>
+<div id="allergies" class="tab-content"></div>
+<div id="medications" class="tab-content"></div>
+<div id="documents" class="tab-content"></div>
+
+@section Scripts {
+    <script>const patientId = @Model.PatientId;</script>
+    <script src="~/js/patientDetails.js"></script>
+}

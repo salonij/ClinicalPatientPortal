@@ -69,5 +69,32 @@ namespace ClinicalPatientPortal.Controllers
                 PageSize = pageSize
             });
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetDemographics(int id)
+        {
+            if (!_context.Patients.Any(p => p.PatientId == id))
+                return NotFound($"Patient {id} not found.");
+
+            var patient = _context.Patients
+                .Where(p => p.PatientId == id)
+                .Select(p => new PatientDetailDto
+                {
+                    PatientId = p.PatientId,
+                    MRN = p.MRN,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    DOB = p.DOB,
+                    Gender = p.Gender,
+                    PhoneNumber = p.PhoneNumber,
+                    AddressLine1 = p.AddressLine1,
+                    City = p.City,
+                    State = p.State,
+                    ZipCode = p.ZipCode
+                })
+                .FirstOrDefault();
+
+            return Ok(patient);
+        }
     }
 }
