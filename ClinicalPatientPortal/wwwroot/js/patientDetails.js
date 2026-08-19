@@ -130,3 +130,33 @@ function renderMedications(meds) {
             </dl>
         </div>`).join('');
 }
+
+// ---------- Documents ----------
+function loadDocuments() {
+    fetch(`/api/patients/${patientId}/documents`)
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('documents').innerHTML = renderDocuments(data);
+        })
+        .catch(() => {
+            document.getElementById('documents').innerHTML =
+                '<p class="empty-state">Unable to load documents.</p>';
+        });
+}
+
+function renderDocuments(docs) {
+    if (!docs.length) {
+        return '<div class="detail-card"><p class="empty-state">No documents on file.</p></div>';
+    }
+
+    const rows = docs.map(d => `
+        <div class="document-row">
+            <div class="document-info">
+                <span class="document-name">${d.documentName}</span>
+                <span class="document-meta">Uploaded: ${new Date(d.uploadedDate).toLocaleDateString()}</span>
+            </div>
+            <a class="btn-download" href="/api/patients/${patientId}/documents/${d.documentId}/download">Download</a>
+        </div>`).join('');
+
+    return `<div class="detail-card">${rows}</div>`;
+}

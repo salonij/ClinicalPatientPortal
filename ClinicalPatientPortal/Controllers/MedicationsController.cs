@@ -6,7 +6,7 @@ namespace ClinicalPatientPortal.Controllers
 {
     [ApiController]
     [Route("api/patients/{patientId}/medications")]
-    public class MedicationsController : Controller
+    public class MedicationsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 

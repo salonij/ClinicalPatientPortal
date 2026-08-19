@@ -157,7 +157,7 @@
 
 .btn-download {
     background-color: var(--color-primary);
-    color: #fff;
+    color: var(--color-white);
     border: none;
     padding: 0.4rem 0.9rem;
     border-radius: 4px;
@@ -167,7 +167,8 @@
 }
 
 .btn-download:hover {
-    opacity: 0.9;
+    color: var(--color-white);
+    opacity: 0.8;
 }
 
 .empty-state {
