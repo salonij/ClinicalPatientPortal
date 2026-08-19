@@ -90,18 +90,19 @@
 }
 
 .badge-severe,
-.badge-high {
+.badge-critical{
     background-color: #fee2e2;
     color: #b91c1c;
 }
 
-.badge-moderate {
+.badge-moderate,
+.badge-high{
     background-color: #fef3c7;
     color: #92400e;
 }
 
 .badge-mild,
-.badge-low {
+.badge-medium{
     background-color: #dcfce7;
     color: #15803d;
 }
@@ -111,7 +112,8 @@
     color: #1e40af;
 }
 
-.badge-inactive {
+.badge-resolved,
+.badge-inactive{
     background-color: #f3f4f6;
     color: #6b7280;
 }
@@ -175,6 +177,34 @@
 color: var(--color-text-muted, #6b7280);
 font-style: italic;
 padding: 1rem 0;
+}
+
+/* Print to pdf */
+
+.tab-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.75rem;
+}
+
+.btn-print {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: var(--color-primary);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-print:hover {
+    color: var(--color-white);
+    opacity: 0.8;
 }
 
 @media (max-width: 640px) {

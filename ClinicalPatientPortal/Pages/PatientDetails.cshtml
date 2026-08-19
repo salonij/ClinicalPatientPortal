@@ -20,9 +20,24 @@
     <button class="tab-btn" data-tab="documents">Documents</button>
 </div>
 
-<div id="demographics" class="tab-content active"></div>
-<div id="allergies" class="tab-content"></div>
-<div id="medications" class="tab-content"></div>
+<div id="demographics" class="tab-content active">
+    <div class="tab-actions">
+        <a class="btn-print" href="/api/patients/@Model.PatientId/pdf/demographics">Print to PDF</a>
+    </div>
+    <div id="demographicsBody"></div>
+</div>
+<div id="allergies" class="tab-content">
+    <div class="tab-actions">
+        <a class="btn-print" href="/api/patients/@Model.PatientId/pdf/allergies">Print to PDF</a>
+    </div>
+    <div id="allergiesBody"></div>
+</div>
+<div id="medications" class="tab-content">
+    <div class="tab-actions">
+        <a class="btn-print" href="/api/patients/@Model.PatientId/pdf/medications">Print to PDF</a>
+    </div>
+    <div id="medicationsBody"></div>
+</div>
 <div id="documents" class="tab-content"></div>
 
 @section Scripts {

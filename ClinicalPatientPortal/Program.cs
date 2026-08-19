@@ -1,6 +1,7 @@
 using ClinicalPatientPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,9 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LogoutPath = "/Logout";
     options.AccessDeniedPath = "/Login";
 });
+
+//adding free community version for QuestPDF
+QuestPDF.Settings.License = LicenseType.Community;
 
 var app = builder.Build();
 

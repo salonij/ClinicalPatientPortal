@@ -31,10 +31,10 @@ function loadDemographics() {
             document.getElementById('patientName').textContent = `${data.firstName} ${data.lastName}`;
             document.getElementById('patientMeta').textContent =
                 `MRN: ${data.mrn} | DOB: ${new Date(data.dob).toLocaleDateString()} | ${data.gender}`;
-            document.getElementById('demographics').innerHTML = renderDemographics(data);
+            document.getElementById('demographicsBody').innerHTML = renderDemographics(data);
         })
         .catch(() => {
-            document.getElementById('demographics').innerHTML =
+            document.getElementById('demographicsBody').innerHTML =
                 '<p class="empty-state">Unable to load demographics.</p>';
         });
 }
@@ -59,10 +59,10 @@ function loadAllergiesAndAlerts() {
         fetch(`/api/patients/${patientId}/alerts`).then(r => r.json())
     ])
         .then(([allergies, alerts]) => {
-            document.getElementById('allergies').innerHTML = renderAllergiesAndAlerts(allergies, alerts);
+            document.getElementById('allergiesBody').innerHTML = renderAllergiesAndAlerts(allergies, alerts);
         })
         .catch(() => {
-            document.getElementById('allergies').innerHTML =
+            document.getElementById('allergiesBody').innerHTML =
                 '<p class="empty-state">Unable to load allergies and alerts.</p>';
         });
 }
@@ -103,10 +103,10 @@ function loadMedications() {
     fetch(`/api/patients/${patientId}/medications`)
         .then(r => r.json())
         .then(data => {
-            document.getElementById('medications').innerHTML = renderMedications(data);
+            document.getElementById('medicationsBody').innerHTML = renderMedications(data);
         })
         .catch(() => {
-            document.getElementById('medications').innerHTML =
+            document.getElementById('medicationsBody').innerHTML =
                 '<p class="empty-state">Unable to load medications.</p>';
         });
 }
