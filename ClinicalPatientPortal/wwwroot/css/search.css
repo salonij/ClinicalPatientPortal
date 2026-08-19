@@ -90,6 +90,16 @@
     cursor: not-allowed;
 }
 
+.search-form .alert-error {
+    background: #FEE2E2;
+    color: var(--color-danger);
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-top: 16px;
+    border: 1px solid #FCA5A5;
+}
+
 /* Responsive: stack the table into cards on narrow screens */
 @media (max-width: 768px) {
     .search-form-grid {
