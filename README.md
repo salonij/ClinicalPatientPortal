@@ -22,7 +22,6 @@ Demo Account
 
 A demo clinician account is seeded automatically on first run — no manual signup is required.
 
-Field	Value
 Email	doctor@clinicalportal.com
 Password	Clinician123
 
