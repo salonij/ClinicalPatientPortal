@@ -1,0 +1,64 @@
+﻿@page
+@model ClinicalPatientPortal.Pages.SearchModel
+@{
+    ViewData["Title"] = "Patient Search";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/search.css" />
+}
+<div class="card">
+    <h1>Patient Search</h1>
+    <p class="page-subtitle">Enter any combination of criteria below to find a patient.</p>
+
+    <form id="searchForm" class="search-form">
+        <div class="search-form-grid">
+            <div class="form-group">
+                <label for="mrn">MRN</label>
+                <input type="text" id="mrn" name="mrn" placeholder="e.g. MRN1001" />
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" name="dob" />
+            </div>
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" placeholder="e.g. Jane" />
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" placeholder="e.g. Doe" />
+            </div>
+        </div>
+        <div class="search-actions">
+            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="button" id="clearBtn" class="btn btn-outline">Clear</button>
+        </div>
+        <p id="searchError" class="alert-error" style="display:none;"></p>
+    </form>
+    <div class="card results-card" id="resultsCard" style="display:none;">
+        <h2 id="resultsHeading">Search Results</h2>
+        <table class="results-table" id="resultsTable">
+            <thead>
+                <tr>
+                    <th>Last Name</th>
+                    <th>First Name</th>
+                    <th>MRN</th>
+                    <th>Date of Birth</th>
+                    <th>Gender</th>
+                </tr>
+            </thead>
+            <tbody id="resultsBody"></tbody>
+        </table>
+        <p id="noResultsMessage" style="display:none; color: var(--color-text-muted);">No patients found matching your search criteria.</p>
+        <div class="pagination-controls" id="paginationControls" style="display:none;">
+            <button type="button" id="prevPageBtn" class="btn btn-outline">Previous</button>
+            <span id="pageInfo" class="page-info"></span>
+            <button type="button" id="nextPageBtn" class="btn btn-outline">Next</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/search.js"></script>
+}
+

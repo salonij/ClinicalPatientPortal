@@ -1,0 +1,150 @@
+﻿.page-subtitle {
+    color: var(--color-text-muted);
+    font-size: 14px;
+    margin-top: -8px;
+    margin-bottom: 20px;
+}
+
+.search-form-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.search-form-grid .form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--color-text);
+}
+
+.search-form-grid .form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.search-form-grid .form-group input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.search-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.results-card {
+    margin-top: 24px;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+}
+
+.results-table th {
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--color-border);
+}
+
+.results-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 14px;
+}
+
+.result-row {
+    cursor: pointer;
+}
+
+.result-row:hover {
+    background-color: var(--color-primary-light);
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.page-info {
+    font-size: 14px;
+    color: var(--color-text-muted);
+}
+
+.pagination-controls .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Responsive: stack the table into cards on narrow screens */
+@media (max-width: 768px) {
+    .search-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .results-table, .results-table thead, .results-table tbody, .results-table th, .results-table td, .results-table tr {
+        display: block;
+    }
+
+    .results-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .results-table tr {
+        border: 1px solid var(--color-border);
+        border-radius: 6px;
+        margin-bottom: 10px;
+    }
+
+    .results-table td {
+        border: none;
+        border-bottom: 1px solid var(--color-border);
+        position: relative;
+        padding-left: 50%;
+    }
+
+    .results-table td:before {
+        position: absolute;
+        left: 12px;
+        width: 45%;
+        white-space: nowrap;
+        font-weight: 600;
+        color: var(--color-text-muted);
+    }
+
+    .results-table td:nth-of-type(1):before {
+        content: "Last Name";
+    }
+
+    .results-table td:nth-of-type(2):before {
+        content: "First Name";
+    }
+
+    .results-table td:nth-of-type(3):before {
+        content: "MRN";
+    }
+
+    .results-table td:nth-of-type(4):before {
+        content: "DOB";
+    }
+
+    .results-table td:nth-of-type(5):before {
+        content: "Gender";
+    }
+}

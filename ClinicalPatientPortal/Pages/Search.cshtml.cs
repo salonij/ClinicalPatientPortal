@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ClinicalPatientPortal.Pages
 {
-    public class IndexModel : PageModel
+    public class SearchModel : PageModel
     {
-        public IActionResult OnGet()
+        public void OnGet()
         {
-            return RedirectToPage("/Search");
         }
     }
 }
