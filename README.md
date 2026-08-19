@@ -22,8 +22,8 @@ Demo Account
 
 A demo clinician account is seeded automatically on first run — no manual signup is required.
 
-Email	doctor@clinicalportal.com
-Password	Clinician123
+Email:	doctor@clinicalportal.com
+Password:	Clinician123
 
 ## Features
 - User Authentication (Login/Logout)
@@ -42,16 +42,16 @@ The app is split into two layers:
 - REST API (/api/patients/...) is organized as one controller per resource.
 
 ## Endpoint							
-GET /api/patients/search : Search patients by MRN, DOB, first/last name (paginated)
-GET /api/patients/{id} : Patient demographics
-GET /api/patients/{id}/allergies : Patient allergies
-GET /api/patients/{id}/alerts : Patient clinical alerts
-GET /api/patients/{id}/medications : Patient medications
-GET /api/patients/{id}/documents : List of documents on file
-GET /api/patients/{id}/documents/{documentId}/download : Download a specific document
-GET /api/patients/{id}/pdf/demographics : Generate demographics PDF
-GET /api/patients/{id}/pdf/allergies : Generate allergies & alerts PDF
-GET /api/patients/{id}/pdf/medications : Generate medications PDF
+-GET /api/patients/search : Search patients by MRN, DOB, first/last name (paginated)
+-GET /api/patients/{id} : Patient demographics
+-GET /api/patients/{id}/allergies : Patient allergies
+-GET /api/patients/{id}/alerts : Patient clinical alerts
+-GET /api/patients/{id}/medications : Patient medications
+-GET /api/patients/{id}/documents : List of documents on file
+-GET /api/patients/{id}/documents/{documentId}/download : Download a specific document
+-GET /api/patients/{id}/pdf/demographics : Generate demographics PDF
+-GET /api/patients/{id}/pdf/allergies : Generate allergies & alerts PDF
+-GET /api/patients/{id}/pdf/medications : Generate medications PDF
 
 ## Notes
 All pages and all API endpoints require authentication by default, with the Login page as the exception.
